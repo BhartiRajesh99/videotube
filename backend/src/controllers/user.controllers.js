@@ -55,15 +55,13 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar file is missing");
   }
 
-  // const avatar = await uploadOnCloudinary(avatarLocalPath);
-  // let coverImage = ""
-  // if(coverImageLocalPath){
-  //     coverImage = await uploadOnCloudinary(coverImageLocalPath);
-  // }
+  if (!coverImageLocalPath) {
+    throw new ApiError(400, "Cover Image file is missing");
+  }
 
   let avatar;
   try {
-    avatar = await uploadOnCloudinary(avatarLocalPath);
+    avatar = await uploadOnCloudinary(avatarLocalPath, "videotube/avatar");
     console.log(`Avatar uploaded: ${avatar.url}`);
   } catch (error) {
     console.log(`Error uploading avatar : ${error}`);
@@ -72,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   let coverImage;
   try {
-    coverImage = await uploadOnCloudinary(coverImageLocalPath);
+    coverImage = await uploadOnCloudinary(coverImageLocalPath, "videotube/cover_image");
     console.log(`Cover Image uploaded: ${coverImage.url}`);
   } catch (error) {
 
@@ -85,12 +83,12 @@ const registerUser = asyncHandler(async (req, res) => {
 
   try {
     const user = await User.create({
-      fullname,
-      avatar: avatar.url,
-      coverImage: coverImage?.url || "",
-      email,
-      password,
       username: username.toLowerCase(),
+      email,
+      fullname,
+      avatar: avatar?.url || "",
+      coverImage: coverImage?.url || "",
+      password,
     });
 
     const createdUser = await User.findById(user._id).select(
