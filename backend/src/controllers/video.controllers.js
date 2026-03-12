@@ -12,7 +12,6 @@ import {
 const getAllVideos = asyncHandler(async (req, res) => {
   
   const { page = 1, limit = 10, query = "", sortBy, sortType, userId } = req.query;
-  //TODO: get all videos based on query, sort, pagination
 
   const pageNum = parseInt(page)
   const limitNum = parseInt(limit)
@@ -70,10 +69,9 @@ const getAllVideos = asyncHandler(async (req, res) => {
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
-  // TODO: get video, upload to cloudinary, create video
 
   if(!req.body){
-    throw new ApiError(500, "request body is empty")
+    throw new ApiError(500, "Request body is empty")
   }  
 
   const { title, description } = req.body;
@@ -253,7 +251,6 @@ const updateVideo = asyncHandler(async (req, res) => {
 
 const deleteVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
-  //TODO: delete video
 
   const video = await Video.findById(videoId)
   

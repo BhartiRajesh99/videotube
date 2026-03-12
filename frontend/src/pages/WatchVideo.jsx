@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import CustomVideoPlayer from "../components/VideoPlayer"
+import { useLocation } from "react-router-dom";
 
 export default function VideoWatchPage() {
   const [expanded, setExpanded] = useState(false);
   const [liked, setLiked] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+
+  const location = useLocation()
+  const {videoUrl} = location.state
 
   const recommended = Array.from({ length: 6 }).map((_, i) => ({
     id: i,
@@ -29,7 +33,7 @@ export default function VideoWatchPage() {
             animate={{ opacity: 1 }}
             className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-transparent"
           >
-            <CustomVideoPlayer />
+            <CustomVideoPlayer url={videoUrl} />
           </motion.div>
 
           {/* Title */}

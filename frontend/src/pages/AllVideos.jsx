@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { AiOutlinePlayCircle } from "react-icons/ai";
 
 const videos = Array.from({ length: 12 }).map((_, i) => ({
   id: i + 1,
@@ -33,10 +32,10 @@ export default function VideoGridPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="group relative cursor-pointer rounded-xl p-3 hover:bg-sky-400/10"
+            className="group relative cursor-pointer border border-transparent rounded-xl p-3 hover:bg-sky-300/15"
           >
             {/* Thumbnail */}
-            <div className="relative overflow-hidden rounded-[10px] bg-white after:absolute after:inset-0 after:h-full after:w-full after:bg-black after:opacity-0 after:transition-all after:duration-300 after:content-[''] group-hover:after:opacity-60">
+            <div className="relative overflow-hidden rounded-md bg-white after:absolute after:inset-0 after:h-full after:w-full after:bg-black after:opacity-0 after:transition-all after:duration-300 after:content-[''] group-hover:after:opacity-60">
               <img
                 src={video.thumbnail}
                 alt={video.title}

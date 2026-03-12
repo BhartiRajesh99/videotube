@@ -1,6 +1,6 @@
 import React from "react";
 
-function FileInput({ name, onChange: setFile }) {
+function FileInput({ name, onChange: setFile, placeholder }) {
   const [fileName, setFileName] = React.useState("");
 
   const handleOnChange = (e) => {
@@ -17,7 +17,7 @@ function FileInput({ name, onChange: setFile }) {
           <p className="text-sm text-emerald-600 font-medium">Selected: {fileName}</p>
         ) : (
           <span className="text-sm text-neutral-800 font-medium">
-            Choose {name === "avatar" ? "Avatar" : "Cover Image"}
+            {placeholder}
           </span>
         )}
 

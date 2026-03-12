@@ -120,8 +120,8 @@ function Signup() {
             type="password"
           />
           <div className="flex flex-col gap-2">
-            <FileInput name="avatar" onChange={setAvatar} />
-            <FileInput name="coverImage" onChange={setCoverImage} />
+            <FileInput name="avatar" placeholder={"Choose Avatar"} onChange={setAvatar} />
+            <FileInput name="coverImage" placeholder={"Choose Cover Image"} onChange={setCoverImage} />
           </div>
 
           <Button type="submit">Signup</Button>

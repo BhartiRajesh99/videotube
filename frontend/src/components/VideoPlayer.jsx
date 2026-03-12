@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {} from "react-icons/ai"
 
-export default function CustomVideoPlayer() {
+export default function CustomVideoPlayer({url}) {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -115,7 +115,7 @@ export default function CustomVideoPlayer() {
     >
       <video
         ref={videoRef}
-        src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        src={url || "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
         className="aspect-video w-full"
         onTimeUpdate={updateProgress}
         
@@ -155,7 +155,7 @@ export default function CustomVideoPlayer() {
             <div className="mt-4 flex items-center justify-between text-white">
               {/* Left */}
               <div className="flex items-center gap-4">
-                <button onClick={togglePlay} className="h-7 w-7 flex cursor-pointer items-center justify-center border border-transparent focus:outline-none focus:ring-1 focus:ring-off-white focus:rounded-full">{playing ? "⏸" : "▶"}</button>
+                <button onClick={togglePlay} className={`h-7 w-7 ${!playing && 'pl-0.75'} flex cursor-pointer items-center justify-center border border-transparent focus:outline-none focus:ring-1 focus:ring-off-white focus:rounded-full`}>{playing ? "⏸" : "▶"}</button>
 
                 <span className="text-sm">
                   {formatTime(videoRef.current?.currentTime || 0)} /{" "}

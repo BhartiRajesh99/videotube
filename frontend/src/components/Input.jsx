@@ -16,7 +16,7 @@ function Input({ type, name, label, placeholder, value, onChange, className }) {
         type={type}
         className={cn(
           className,
-          "durantion-200 w-full border-b border-l-2 border-b-slate-200 border-l-transparent px-1 py-2 text-sm tracking-tight transition-all ease-in-out placeholder:text-xs placeholder:text-slate-500 focus:border-l-2 focus:border-l-slate-700 focus:bg-neutral-100 focus:outline-none",
+          "durantion-200 w-full border-b border-l-2 border-b-slate-200 border-l-transparent px-1 py-2 text-sm tracking-tight transition-all ease-in-out placeholder:text-xs placeholder:text-gray-500 focus:border-l-2 focus:border-l-slate-700 focus:bg-neutral-100 focus:outline-none",
         )}
       />
     </label>
