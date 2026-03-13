@@ -10,8 +10,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import Channel from "./pages/Channel";
-import AllVideos from "./pages/AllVideos"
+import AllVideos from "./pages/AllVideos";
 import VideoWatchPage from "./pages/WatchVideo";
+import Settings from "./pages/Settings";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
       </Route>
-      
+
       <Route element={<PublicRoute />}>
         <Route element={<AuthLayout />}>
           <Route path="/signup" element={<Signup />} />
@@ -34,7 +36,10 @@ function App() {
           <Route path="/all-videos" element={<AllVideos />} />
           <Route path="/watch-video" element={<VideoWatchPage />} />
           <Route path="/subscriptions" element={<Subscriptions />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

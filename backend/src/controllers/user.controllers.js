@@ -75,7 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
   } catch (error) {
 
     if(avatar){
-      await deleteFromCloudinary(avatar, "image")
+      await deleteFromCloudinary(avatar.public_id, "image")
     }
     console.log(`Error uploading cover image : ${error}`);
     throw new ApiError(500, "Failed to upload cover image");
@@ -310,7 +310,8 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(400, "File is required");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const avatar = await uploadOnCloudinary(avatarLocalPath, "videotube/avatar");
+  console.log(`Public_id uploaded: ${avatar.public_id}`);
 
   if (!avatar.url) {
     throw new ApiError(400, "Something went wrong while uploading avatar");
@@ -326,6 +327,12 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     { new: true }
   ).select("-password -refreshToken");
 
+  const oldAvatarUrl = req.user.avatar
+  const publicId = oldAvatarUrl.split("/upload/")[1].split(".")[0].replace(/^v\d+\//, "");
+
+  if(publicId)
+    await deleteFromCloudinary(publicId, "image")
+
   return res
     .status(200)
     .json(new ApiResponse(200, user, "Avatar updated successfully"));
@@ -338,7 +345,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, "File is required");
   }
 
-  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+  const coverImage = await uploadOnCloudinary(coverImageLocalPath, "videotube/cover_image");
 
   if (!coverImage.url) {
     throw new ApiError(400, "Something went wrong while uploading cover image");
@@ -348,11 +355,17 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     req.user?._id,
     {
       $set: {
-        covrImage: coverImage.url,
+        coverImage: coverImage.url,
       },
     },
     { new: true }
   ).select("-password -refreshToken");
+
+  const oldCoverImageUrl = req.user.coverImage
+  const publicId = oldCoverImageUrl.split("/upload/")[1].split(".")[0].replace(/^v\d+\//, "");
+
+  if(publicId)
+    await deleteFromCloudinary(publicId, "image")
 
   return res
     .status(200)

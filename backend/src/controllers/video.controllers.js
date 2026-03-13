@@ -87,7 +87,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
   let videoFile;
   try {
-    videoFile = await uploadOnCloudinary(videoLocalPath)
+    videoFile = await uploadOnCloudinary(videoLocalPath, "videotube/video")
     console.log(`Video file uploaded ${videoFile.url}`)
   } catch (error) {
     console.log(`Error uploading video : ${error}`);
@@ -96,7 +96,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
   let thumbnailFile;
   try {
-    thumbnailFile = await uploadOnCloudinary(thumbnailLocalPath)
+    thumbnailFile = await uploadOnCloudinary(thumbnailLocalPath, "videotube/thumbnail")
     console.log(`Thumbnail uploaded ${thumbnailFile.url}`);
     
   } catch (error) {
@@ -212,8 +212,8 @@ const updateVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "video file is required")
   }
 
-  newVideoFile = await uploadOnCloudinary(videoLocalPath)
-  newThumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+  newVideoFile = await uploadOnCloudinary(videoLocalPath, "videotube/video")
+  newThumbnail = await uploadOnCloudinary(thumbnailLocalPath, "videotube/thumbnail");
 
   if (!newThumbnail) {
     throw new ApiError(
