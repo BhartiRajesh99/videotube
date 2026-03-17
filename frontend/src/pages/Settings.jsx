@@ -30,7 +30,7 @@ export default function Settings() {
     try {
       e.preventDefault();
       setLoading(true);
-      if (form.fullname !== user.fullname) {
+      if (form.fullname !== user.fullname || form.email !== user.email) {
         const response = await api.patch("/users/update-account", {
           fullname: form.fullname,
           email: form.email,

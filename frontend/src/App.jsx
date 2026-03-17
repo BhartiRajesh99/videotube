@@ -14,6 +14,7 @@ import AllVideos from "./pages/AllVideos";
 import VideoWatchPage from "./pages/WatchVideo";
 import Settings from "./pages/Settings";
 import DashboardLayout from "./layouts/DashboardLayout";
+import Content from "./pages/Content";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="content" element={<Content />} />
           </Route>
         </Route>
       </Route>

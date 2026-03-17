@@ -4,7 +4,6 @@ import Stats from "../components/Stats";
 import Features from "../components/Features";
 import Trending from "../components/Trending";
 import Creators from "../components/Creators";
-import Footer from "../components/Footer";
 import CTA from "../components/CTA";
 
 export default function Home() {

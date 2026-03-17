@@ -9,30 +9,26 @@ import { AiFillCamera } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import { useFetchVideos } from "../hooks/useFetchVideo";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { videos } = useFetchVideos({
+    page: 1,
+    limit: 10,
+    sortBy: "title",
+    sortType: "dsc",
+    userId: user._id,
+  });
+
   const [loading, setLoading] = useState(false);
-  const [recentVideos, setRecentVideos] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [video, setVideo] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [openVideoId, setOpenVideoId] = useState(null);
-
-  const fetchUploadedVideos = async () => {
-    try {
-      const response = await api.get(
-        `/video/get-all-videos?page=${1}&limit=${10}&sortBy=title&sortType=dsc&userId=${user._id}`,
-      );
-      console.log(response.data.data);
-      setRecentVideos(response.data.data);
-    } catch (error) {
-      console.log(error.data);
-    }
-  };
 
   const handleSubmit = async (e) => {
     try {
@@ -72,10 +68,21 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    fetchUploadedVideos();
-    setOpenVideoId(false);
-  }, []);
+  const handleUpdate = async (id) => {
+    try {
+      const response = await api.patch(`/video/update-video/${id}`);
+      console.log(response.data);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.data.message);
+    }
+  };
+
+  const videoManageAction = {
+    Update: handleUpdate,
+    Delete: handleDelete,
+  };
 
   useEffect(() => {
     if (showUploadForm) {
@@ -307,12 +314,12 @@ export default function Dashboard() {
               </h3>
 
               <div className="space-y-4">
-                {!recentVideos.length ? (
+                {!videos.length ? (
                   <div className="w-full text-center text-slate-500">
                     No Videos
                   </div>
                 ) : (
-                  recentVideos.map((vid, i) => (
+                  videos.map((vid, i) => (
                     <div
                       key={i}
                       onClick={() => handlePlayRecentVideos(vid.videoFile[0])}
@@ -361,15 +368,15 @@ export default function Dashboard() {
 
                       {/* Dropdown */}
                       {openVideoId === vid._id && (
-                        <div className="absolute -top-6 right-4 overflow-hidden rounded-lg border border-slate-200 bg-white py-2 shadow backdrop-blur-md">
-                          {["delete"].map((item, i) => (
+                        <div className="absolute -top-14 right-4 min-w-30 overflow-hidden rounded-lg border border-slate-200 bg-white py-2 shadow backdrop-blur-md">
+                          {Object.keys(videoManageAction).map((item, i) => (
                             <div
                               key={i}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleDelete(vid._id);
+                                videoManageAction[item](vid._id);
                               }}
-                              className="px-8 py-2 text-sm text-slate-700 hover:bg-slate-100"
+                              className="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
                             >
                               {item}
                             </div>
@@ -384,7 +391,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      
     </>
   );
 }
